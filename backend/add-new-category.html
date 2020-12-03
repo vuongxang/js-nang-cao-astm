@@ -9,14 +9,11 @@
     <link rel="stylesheet" href="css/all.min.css">
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="csS/style.css?v=1">
-    
     <script src="js/jquery.min.js" type="text/javascript"></script>
-
 </head>
 
 <body>
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-sm-3 col-lg-2 sidebar shadow-lg p-3 mb-5 bg-light rounded">
                 <div class="sidebar-brand-box border-bottom pb-4">
@@ -25,15 +22,15 @@
                 <nav class="sidebar-menu">
                     <ul class="nav flex-column">
                         <li class=" nav-item sidebar-dashboard btn btn-danger">
-                            <a class="nav-link active text-left text-light" href="#"><i
+                            <a class="nav-link active text-left text-light" href="index.html"><i
                                     class="fas fa-tachometer-alt mr-2 menu-icon"></i>Dashboard</a>
                         </li>
                         <li class="nav-item btn btn-light">
-                            <a class="nav-link text-left text-dark" href="category.html"><i
+                            <a class="nav-link text-left text-dark" href="#"><i
                                     class="fab fa-creative-commons-nd mr-2 menu-icon"></i></i>Danh mục</a>
                         </li>
                         <li class="nav-item btn btn-light">
-                            <a class="nav-link text-left text-dark" href="#"><i
+                            <a class="nav-link text-left text-dark" href="index.html"><i
                                     class="fab fa-product-hunt mr-2 menu-icon"></i>Sản phẩm</a>
                         </li>
                         <li class="nav-item btn btn-light">
@@ -56,7 +53,6 @@
                 </nav>
             </div>
             <!-- End siderbar -->
-
             <div class="col-sm-9 col-lg-10 bg-light main-panel container-fluid">
                 <div class="topbar d-flex justify-content-between mb-4">
                     <h3 class="mb-4 pt-3"> <span class="text-danger font-weight-bold">Home/</span> Dashboard</h3>
@@ -123,7 +119,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-sm-6 col-md-3 col-lg-3">
                                 <div class="card text-white bg-danger mb-3">
                                     <div class="card-header">
@@ -150,31 +145,58 @@
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-col-4" id="posts">
                     </div>
                 </div>
-                <!--Content-->
-                <div id="detailPost">
+                <!--Content -->
+                <div class="add-form">
                     <div class="container">
-                        <h2 class="text-2xl font-bold my-10 text-center">Quản lý sản phẩm</h2>
-                        <table id="list-product" class="table table-striped">
-                            <thead>
-                                <th>id</th>
-                                <th>name</th>
-                                <th>image</th>
-                                <th>price</th>
-                                <th>desc</th>
-                             <th><a href="add-new-product.html" class="btn btn-success">add new</a></th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col-6 offset-3">
+                                <h2 class="text-2xl my-4">Thêm mới</h2>
+                                <form action="" method="post" id="add-form-category">
+                                    <div class="form-group">
+                                        <label for="">Name</label>
+                                        <input type="text" class="form-control" name="name">
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="">image</label>
+                                        <input type="text" class="form-control" name="image">
+                                    </div>
+                                    <button type="submit" class="btn btn-info">Add</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
                 <!--list table-->
             </div>
         </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/script.js"></script>
+    <script>
+        //add new category
+        const $ = document.querySelector.bind(document);
+        const url = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+
+
+        $('#add-form-category').addEventListener('submit', (e)=> {
+            e.preventDefault();
+            const name = $('input[name="name"]').value;
+            const image = $('input[name="image"]').value;
+
+            const objNew = {
+                name: name,
+                image: image
+            }
+
+            axios.post(url, objNew)
+                .then(function (response) {
+                    window.location = "category.html";
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
+    </script>
 </body>
 
 </html>
