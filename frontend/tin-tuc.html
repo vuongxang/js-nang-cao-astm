@@ -86,21 +86,13 @@
 
     <section>
         <div class="container">
-            <h2 class="text-center my-4">DANH MỤC</h2>
-            <div id="category" class="row">
+            <h2 class="text-center my-4">Tin tức</h2>
+            <div id="posts" class="row">
 
             </div>
         </div>
     </section>
-    <!--End category-->
-    <section>
-        <div class="container">
-            <h2 class="text-center my-4">SẢN PHẨM</h2>
-            <div id="product" class="row">
-                
-            </div>
-        </div>
-    </section>
+    <!--End posts-->
 
     <footer class="footer h-48 bg-blue-700"> 
         <p class="text-center text-white">Footer here</p>
@@ -121,10 +113,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
-        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
-        const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
+        const urlPost = 'https://5fc51af836bc7900163446a0.mockapi.io/posts';
 
-        axios.get(urlCategory)
+        axios.get(urlPost)
             .then( (response) =>{
                 if (response.status === 200) {
                     var data = response.data;
@@ -134,39 +125,18 @@
                             <div class="card m-1">
                                 <img src="${item.image}" class="card-img-top" alt="...">
                             <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                <h5 class="card-title">${item.title}</h5>
+                                <a href="post-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
                             </div>
                             </div>
                         </div>
                         `
                     }).join("");
-                    $('#category').innerHTML = results;
+                    $('#posts').innerHTML = results;
                 }
             });
 
-            axios.get(urlProducts)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                                 <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        `
-                    }).join("");
-                    $('#product').innerHTML = results;
-                }
-            });
+
     </script>
 </body>
 

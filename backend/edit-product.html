@@ -34,8 +34,8 @@
                                     class="fab fa-product-hunt mr-2 menu-icon"></i>Sản phẩm</a>
                         </li>
                         <li class="nav-item btn btn-light">
-                            <a class="nav-link text-left text-dark" href="#"><i
-                                    class="fas fa-user mr-2 menu-icon"></i>Khách hàng</a>
+                            <a class="nav-link text-left text-dark" href="posts.html"><i
+                                    class="fas fa-user mr-2 menu-icon"></i>Bài viết</a>
                         </li>
                         <li class="nav-item btn btn-light">
                             <a class="nav-link text-left text-dark" href="#"><i
@@ -161,6 +161,10 @@
                                         <input type="text" class="form-control" name="price">
                                     </div>
                                     <div class="form-group">
+                                        <label for="">sale price</label>
+                                        <input type="text" class="form-control" name="sale_price">
+                                    </div>
+                                    <div class="form-group">
                                         <label for="">image</label>
                                         <input type="text" class="form-control" name="image">
                                     </div>
@@ -179,57 +183,63 @@
         </div>
     </div>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script src="js/script.js"></script>
+    <!-- <script src="js/script.js"></script> -->
     <script>
-        //get product
-var productInfo = {};
-var id = null;
-function getProductInfor() {
-    // 1. lấy tham số id trên đường dẫn
-    const urlParams = new URL(document.URL);
-    id = urlParams.searchParams.get('id');
-    console.log(id);
-    // 2. gửi request lên mock api để lấy thông tin về
-    const getProductInfoUrl =`${url}/${id}`;
-    console.log(getProductInfoUrl);
-    axios.get(getProductInfoUrl)
-        .then(response => {
-            if (response.status===200) {
-                productInfo = response.data;
-                // 3. điền dữ liệu lấy đc từ api vào trong form
-                $('[name="name"]').value = productInfo.name;
-                $('[name="price"]').value = productInfo.price;
-                $('[name="image"]').value = productInfo.image;
-                $('[name="desc"]').value = productInfo.desc;
-            }
-        })
-}
-getProductInfor();
+        const url = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
 
-$('#edit-form').addEventListener("submit", (e) => {
-    e.preventDefault();
-    const name = $('input[name="name"]').value;
-    const price = $('input[name="price"]').value;
-    const image = $('input[name="image"]').value;
-    const desc = $('input[name="desc"]').value;
-    const objNew = {
-        name: name,
-        price: price,
-        image: image,
-        desc: desc
-    }
-    //Gửi request lên mocapi để cập nhật sản phẩm
-    const updateProductUrl = url + "/" + id;
-    axios.put(updateProductUrl, objNew)
-        .then((response) => {
-            if (response.status===200) {
-                window.location = "index.html";
+        const $ = document.querySelector.bind(document);
+        //get product
+        var productInfo = {};
+        var id = null;
+        function getProductInfor() {
+            // 1. lấy tham số id trên đường dẫn
+            const urlParams = new URL(document.URL);
+            id = urlParams.searchParams.get('id');
+            console.log(id);
+            // 2. gửi request lên mock api để lấy thông tin về
+            const getProductInfoUrl = `${url}/${id}`;
+            console.log(getProductInfoUrl);
+            axios.get(getProductInfoUrl)
+                .then(response => {
+                    if (response.status === 200) {
+                        productInfo = response.data;
+                        // 3. điền dữ liệu lấy đc từ api vào trong form
+                        $('[name="name"]').value = productInfo.name;
+                        $('[name="price"]').value = productInfo.price;
+                        $('[name="sale_price"]').value = productInfo.sale_price;
+                        $('[name="image"]').value = productInfo.image;
+                        $('[name="desc"]').value = productInfo.desc;
+                    }
+                })
+        }
+        getProductInfor();
+
+        $('#edit-form').addEventListener("submit", (e) => {
+            e.preventDefault();
+            const name = $('input[name="name"]').value;
+            const price = $('input[name="price"]').value;
+            const sale_price = $('input[name="sale_price"]').value;
+            const image = $('input[name="image"]').value;
+            const desc = $('input[name="desc"]').value;
+            const objNew = {
+                name: name,
+                price: price,
+                sale_price: sale_price,
+                image: image,
+                desc: desc
             }
-        })
-        .catch(function (error) {
-            console.log(error);
+            //Gửi request lên mocapi để cập nhật sản phẩm
+            const updateProductUrl = url + "/" + id;
+            axios.put(updateProductUrl, objNew)
+                .then((response) => {
+                    if (response.status === 200) {
+                        window.location = "index.html";
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         });
-});
     </script>
 </body>
 

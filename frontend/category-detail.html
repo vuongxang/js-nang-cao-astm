@@ -19,7 +19,8 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html">
-                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png" alt="" width="50">
+                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png"
+                            alt="" width="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -83,26 +84,39 @@
         </div>
     </section>
     <!--End slider-->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="bg-primary text-white p-2">
+                    <h4 class="text-center">Danh sách danh mục</h4>
+                </div>
+                <div class="border rounded">
+                    <div class="list-group">
+                        <ul class="list-group list-group-flush" id="category">
 
-    <section>
-        <div class="container">
-            <h2 class="text-center my-4">DANH MỤC</h2>
-            <div id="category" class="row">
-
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <h2 class="text-center my-4" id="cate_name"></h2>
+                <button class="btn btn-primary">Xắp xếp theo tên</button>
+                <button class="btn btn-success">Xắp xếp theo giá</button>
+                <div class="row" id="product"></div>
             </div>
         </div>
-    </section>
+    </div>
     <!--End category-->
-    <section>
+    <!-- <section>
         <div class="container">
             <h2 class="text-center my-4">SẢN PHẨM</h2>
             <div id="product" class="row">
                 
             </div>
         </div>
-    </section>
+    </section> -->
 
-    <footer class="footer h-48 bg-blue-700"> 
+    <footer class="footer h-48 bg-blue-700">
         <p class="text-center text-white">Footer here</p>
     </footer>
     <!--End products-->
@@ -121,52 +135,66 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
-        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+
         const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
+        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+        //Lấy tham số trên đường dẫn
+        const urlParams = new URL(document.URL);
+        var id = urlParams.searchParams.get('id');
 
         axios.get(urlCategory)
-            .then( (response) =>{
+            .then((response) => {
                 if (response.status === 200) {
                     var data = response.data;
                     const results = data.map((item) => {
                         return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                            </div>
-                            </div>
-                        </div>
+                        <li class="list-group-item"><a href="category-detail.html?id=${item.id}">${item.name}</a></li>
                         `
                     }).join("");
                     $('#category').innerHTML = results;
                 }
             });
 
-            axios.get(urlProducts)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                                 <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+        function getCateInfor() {
+            console.log(id);
+            // 2. gửi request lên mock api để lấy thông tin về
+            const getCateInforUrl = `${urlCategory}/${id}`;
+
+            axios.get(getCateInforUrl)
+                .then(response => {
+                    cateInfo = response.data;
+                    console.log(cateInfo);
+                    $('#cate_name').innerHTML = cateInfo.name;
+                })
+        }
+        getCateInfor();
+
+        var product_cate = [];
+        axios.get(urlProducts)
+            .then(response => {
+                const products = response.data;
+                products.forEach(item => {
+                    if (item.cate_id === id) {
+                        product_cate.push(item);
+                    }
+                });
+                const result = product_cate.map((item) => {
+                    return `
+                                <div class="col-sm-4 text-center">
+                                    <div class="card m-1">
+                                        <img src="${item.image}" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                        <h5 class="card-title">${item.name}</h5>
+                                        <h5 class="card-title">${item.price} $</h5>
+                                        <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            
-                        </div>
-                        `
-                    }).join("");
-                    $('#product').innerHTML = results;
-                }
+                                `
+                }).join("");
+                $('#product').innerHTML = result;
             });
+
     </script>
 </body>
 

@@ -19,7 +19,8 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html">
-                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png" alt="" width="50">
+                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png"
+                            alt="" width="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -83,29 +84,40 @@
         </div>
     </section>
     <!--End slider-->
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="bg-primary text-white p-2">
+                    <h4 class="text-center">Danh sách danh mục</h4>
+                </div>
+                <div class="border rounded">
+                    <div class="list-group">
+                        <ul class="list-group list-group-flush" id="category">
 
-    <section>
-        <div class="container">
-            <h2 class="text-center my-4">DANH MỤC</h2>
-            <div id="category" class="row">
-
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <h2 class="text-center my-4" id="product_name"></h2>
+                <div id="image"></div>
+                <div class="text-center">
+                    <del class="text-3xl mx-3" id="price"></del>$
+                    <span class="text-3xl" id="sale_price"></span>$
+                    <p >Sale off: <span id="sale_off"></span> %</p>
+                </div>
+                <hr>
+                <div class="text-center" id="content"></div>
             </div>
         </div>
-    </section>
-    <!--End category-->
-    <section>
-        <div class="container">
-            <h2 class="text-center my-4">SẢN PHẨM</h2>
-            <div id="product" class="row">
-                
-            </div>
-        </div>
-    </section>
+    </div>
+    </div>
+    <!--End product-->
 
-    <footer class="footer h-48 bg-blue-700"> 
+    <footer class="footer h-48 bg-blue-700">
         <p class="text-center text-white">Footer here</p>
     </footer>
-    <!--End products-->
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -121,52 +133,48 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
-        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+
         const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
+        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+        //Lấy tham số trên đường dẫn
+        const urlParams = new URL(document.URL);
+        var id = urlParams.searchParams.get('id');
 
         axios.get(urlCategory)
-            .then( (response) =>{
+            .then((response) => {
                 if (response.status === 200) {
                     var data = response.data;
                     const results = data.map((item) => {
                         return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                            </div>
-                            </div>
-                        </div>
+                        <li class="list-group-item"><a href="category-detail.html?id=${item.id}">${item.name}</a></li>
                         `
                     }).join("");
                     $('#category').innerHTML = results;
                 }
             });
 
-            axios.get(urlProducts)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                                 <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        `
-                    }).join("");
-                    $('#product').innerHTML = results;
-                }
-            });
+
+        function getProductInfor() {
+            console.log(id);
+            // 2. gửi request lên mock api để lấy thông tin về
+            const getProductInforUrl = `${urlProducts}/${id}`;
+            console.log(getProductInforUrl);
+            axios.get(getProductInforUrl)
+                .then(response => {
+                    productInfo = response.data;
+                    console.log(productInfo);
+
+                    $('#product_name').innerHTML = productInfo.name;
+                    $('#price').innerHTML = productInfo.price;
+                    $('#sale_price').innerHTML = productInfo.sale_price;
+                    $('#sale_off').innerHTML = (productInfo.price-productInfo.sale_price)/productInfo.price*100;
+                    $('#image').innerHTML = `<img src="${productInfo.image}" class="w-full"/>`;
+                    $('#content').innerHTML = productInfo.content;
+
+                })
+        }
+        getProductInfor();
+
     </script>
 </body>
 

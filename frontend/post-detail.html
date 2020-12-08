@@ -86,21 +86,22 @@
 
     <section>
         <div class="container">
-            <h2 class="text-center my-4">DANH MỤC</h2>
-            <div id="category" class="row">
-
+            <div id="posts" class="my-8">
+                <div class="text-center">
+                    <h3 id="title" class="text-center my-4"></h3>
+                    <p class="text-center" >Tác giả: <span id="author"></span></p>
+                </div>
+                <div class="text-center" id="image">
+                    
+                </div>
+                <hr>
+                <div class="text-center my-10" id="content">
+                    
+                </div>
             </div>
         </div>
     </section>
-    <!--End category-->
-    <section>
-        <div class="container">
-            <h2 class="text-center my-4">SẢN PHẨM</h2>
-            <div id="product" class="row">
-                
-            </div>
-        </div>
-    </section>
+    <!--End posts-->
 
     <footer class="footer h-48 bg-blue-700"> 
         <p class="text-center text-white">Footer here</p>
@@ -121,52 +122,33 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
-        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
-        const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
+        const urlPost = 'https://5fc51af836bc7900163446a0.mockapi.io/posts';
 
-        axios.get(urlCategory)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                            </div>
-                            </div>
-                        </div>
-                        `
-                    }).join("");
-                    $('#category').innerHTML = results;
-                }
-            });
+        var postInfo = {};
+        var id = null;
+        function getPostInfor() {
+            // 1. lấy tham số id trên đường dẫn
+            const urlParams = new URL(document.URL);
+            id = urlParams.searchParams.get('id');
+            console.log(id);
+            // 2. gửi request lên mock api để lấy thông tin về
+            const getPostInforUrl = `${urlPost}/${id}`;
 
-            axios.get(urlProducts)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                                 <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                                </div>
-                            </div>
-                            
-                        </div>
-                        `
-                    }).join("");
-                    $('#product').innerHTML = results;
-                }
-            });
+            axios.get(getPostInforUrl)
+                .then(response => {
+                        postInfo = response.data;
+                        console.log(postInfo);
+
+                        $('#title').innerHTML = postInfo.title;
+                        $('#author').innerHTML = postInfo.author;
+                        $('#image').innerHTML = `<img src="${postInfo.image}" class="w-full"/>`;
+                        $('#content').innerHTML = postInfo.content;
+
+                })
+        }
+        getPostInfor();
+
+
     </script>
 </body>
 

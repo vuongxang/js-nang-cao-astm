@@ -84,14 +84,14 @@
     </section>
     <!--End slider-->
 
-    <section>
+    <!-- <section>
         <div class="container">
             <h2 class="text-center my-4">DANH MỤC</h2>
             <div id="category" class="row">
 
             </div>
         </div>
-    </section>
+    </section> -->
     <!--End category-->
     <section>
         <div class="container">
@@ -121,29 +121,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
-        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+
         const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
 
-        axios.get(urlCategory)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                            </div>
-                            </div>
-                        </div>
-                        `
-                    }).join("");
-                    $('#category').innerHTML = results;
-                }
-            });
 
             axios.get(urlProducts)
             .then( (response) =>{
