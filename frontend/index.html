@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Title</title>
+    <title>Js nâng cao- VuongLQPH12301</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -19,7 +19,8 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html">
-                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png" alt="" width="50">
+                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png"
+                            alt="" width="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -47,6 +48,7 @@
                             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                         </form>
                     </div>
+                    <div class="mx-2"><a href="gio-hang.html" class="text-white">Cards</a>( <span id="card_quatity" class="text-white"> 0 <span> </div>)
                 </nav>
             </div>
         </div>
@@ -97,12 +99,12 @@
         <div class="container">
             <h2 class="text-center my-4">SẢN PHẨM</h2>
             <div id="product" class="row">
-                
+
             </div>
         </div>
     </section>
 
-    <footer class="footer h-48 bg-blue-700"> 
+    <footer class="footer h-48 bg-blue-700">
         <p class="text-center text-white">Footer here</p>
     </footer>
     <!--End products-->
@@ -122,51 +124,110 @@
     <script>
         const $ = document.querySelector.bind(document);
         const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
-        const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
 
+        //Show danh mục sản phẩm
         axios.get(urlCategory)
-            .then( (response) =>{
+            .then((response) => {
                 if (response.status === 200) {
                     var data = response.data;
                     const results = data.map((item) => {
                         return `
-                        <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <a href="category-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                            <div class="col-sm-3 text-center">
+                                <div class="card m-1">
+                                    <img src="${item.image}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">${item.name}</h5>
+                                    <a href="category-detail.html?cate_id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                </div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
                         `
                     }).join("");
                     $('#category').innerHTML = results;
                 }
             });
 
-            axios.get(urlProducts)
-            .then( (response) =>{
+        //Show sản phẩm
+        var urlProducts = `${urlCategory}/1/products`;
+        axios.get(urlProducts)
+            .then((response) => {
                 if (response.status === 200) {
                     var data = response.data;
                     const results = data.map((item) => {
                         return `
                         <div class="col-sm-3 text-center">
-                            <div class="card m-1">
-                                <img src="${item.image}" class="card-img-top" alt="...">
-                                 <div class="card-body">
-                                <h5 class="card-title">${item.name}</h5>
-                                <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
-                                </div>
-                            </div>
                             
+                                <div class="card m-1">
+                                    <a href="product-detail.html?cate_id=${item.cate_id}&id=${item.id}">
+                                        <img src="${item.image}" class="card-img-top" alt="...">
+                                    </a>
+                                    <div class="card-body">
+                                        <a href="product-detail.html?cate_id=${item.cate_id}&id=${item.id}">
+                                            <h5 class="card-title">${item.name}</h5>
+                                        </a>
+                                    <h5 class="card-title">${item.price} $</h5>
+                                    <buttom class="btn btn-danger" onclick="addToCard(${item.cate_id},${item.id})">Add to card</buttom>
+                                    <a href="product-detail.html?cate_id=${item.cate_id}&id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                    </div>
+                                </div>
+ 
                         </div>
                         `
                     }).join("");
                     $('#product').innerHTML = results;
                 }
             });
+
+            //Kiểm tra trong localstorage đã có card chưa có thì lấy ra
+            var cardItem = [];
+
+            if (typeof (Storage) !== "undefined") {
+                        cardItem = JSON.parse(localStorage.getItem('card'));
+                    }
+                    console.log(cardItem);
+        //Thêm giỏ hàng
+        function addToCard(cate_id, id) {
+            const urlProductCart = `${urlCategory}/${cate_id}/products/${id}`;
+            axios.get(urlProductCart)
+                .then(res => {
+                    const product = {};
+                    var daTonTai = false;
+                    product.id = res.data.id;
+                    product.name = res.data.name;
+                    product.price = res.data.sale_price;
+                    product.image = res.data.image;
+                    product.quantity = 1;
+                    if(cardItem){
+                        cardItem.forEach(item => {
+                        if (product.id == item.id) {
+                            item.quantity = item.quantity + 1;
+                            daTonTai = true;
+                        }
+                    });
+                    }
+                    if (daTonTai==false) {
+                        cardItem.push(product);
+                    }
+                    // console.log(product);
+                    var item = JSON.stringify(cardItem);
+                    if (typeof (Storage) !== "undefined") {
+                        localStorage.setItem('card', item);
+
+                        //Hiển thị số lượng trên icon giỏ hàng
+                        if(cardItem){
+                            $('#card_quatity').innerHTML = cardItem.length;
+                        }
+                        
+                    }
+                });
+        }
+        cardItem =JSON.parse(localStorage.getItem('card'));
+        if(cardItem){
+            $('#card_quatity').innerHTML = cardItem.length;
+        }
+        
+
+        
     </script>
 </body>
 

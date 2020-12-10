@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <title>Js nâng cao- VuongLQPH12301</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <div class="bg-primary">
+            <div class="container">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="navbar-brand" href="index.html">
+                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png"
+                            alt="" width="50">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item active">
+                                <a class="nav-link text-white font-weight-bold" href="index.html">TRANG CHỦ <span
+                                        class="sr-only">(current)</span></a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white font-weight-bold" href="san-pham.html">SẢN PHẨM</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white font-weight-bold" href="tin-tuc.html">BÀI VIẾT</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-white font-weight-bold" href="lien-he.html">LIÊN HỆ</a>
+                            </li>
+                        </ul>
+                        <form class="form-inline my-2 my-lg-0">
+                            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        </form>
+                    </div>
+                    <div><a href="gio-hang.html" class="fa fas-card">Cards</a>( <span id="card_quatity"> 0 <span> </div>
+                    )
+                </nav>
+            </div>
+        </div>
+    </header>
+    <!--End Header-->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-8 border rounded my-10">
+                    <h2>Giỏ hàng</h2>
+                    <table class="table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>STT</th>
+                                <th>Ảnh</th>
+                                <th>Sản phẩm</th>
+                                <th>Số lượng</th>
+                                <th>Đơn giá</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="card_item">
+
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td class="font-weight-bold text-xl text-gray-800">Tổng cộng</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td class="font-weight-bold text-xl text-red-500"><span id="tong_tien"></span> $</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-4 border rounded my-10 bg-gray-200 py-10">
+                    <form action="" method="post" class="" id="oder_form">
+                        <div class="form-group">
+                            <label for="">Họ Tên</label>
+                            <input type="text" class="form-control" name="fullname">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Địa chỉ</label>
+                            <input type="text" class="form-control" name="address">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Số điện thoại</label>
+                            <input type="text" class="form-control" name="phone_number">
+                        </div>
+                        <div class="form-group">
+                            <label for="">Phương thức thanh toán</label>
+                            <input type="radio" value="1" name="pay_method" checked><label for="">Tiền mặt</label>
+                            <input type="radio" value="2" name="pay_method"><label for="">Online</label>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-success">Đặt hàng</button>
+                        </div>
+                    </form>
+                    <div id="thong_bao" class="text-success text-center my-4"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="footer h-48 bg-blue-700">
+        <p class="text-center text-white">Footer here</p>
+    </footer>
+    <!--End products-->
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const $ = document.querySelector.bind(document);
+        const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+
+
+        var cardItem = [];
+        if (typeof (Storage) !== "undefined") {
+            cardItem = JSON.parse(localStorage.getItem('card'));
+        }
+        console.log(cardItem);
+        function getCartItem() {
+            const result = cardItem.map((item, index) => {
+                return `
+                    <tr id="row-${item.id}">
+                        <td>${index + 1}</td>
+                        <td><img src="${item.image}" width="50"></td>
+                        <td>${item.name}</td>
+                        <td><input  type="number" id="change-quantity-${item.id}" value="${item.quantity}" onchange="chanQantity(${item.id})"></td>
+                        <td>${item.price} $</td>
+                        <td><button onclick="removeElement(${item.id})">Xóa</td>
+                    </tr>
+                `
+            }).join("");
+            $('#card_item').innerHTML = result;
+            $('#card_quatity').innerHTML = cardItem.length;
+        }
+        getCartItem();
+
+        //Tính tổng tiền
+        function getTongTien() {
+            const tongTien = cardItem.reduce((accumulator, currentValue) => {
+                return (accumulator + currentValue.quantity * currentValue.price);
+            }, 0);
+            return tongTien;
+        }
+        $('#tong_tien').innerHTML = getTongTien();
+
+        function chanQantity(id){
+            
+            let pro = cardItem.find(element => element.id >=id);
+            
+            pro.quantity = $('#change-quantity-'+pro.id).value;
+            console.log(pro);
+            console.log(cardItem);
+            var item = JSON.stringify(cardItem);
+            if (typeof (Storage) !== "undefined") {
+                localStorage.setItem('card', item);
+                $('#card_quatity').innerHTML = cardItem.length;
+            }
+            $('#tong_tien').innerHTML = getTongTien();
+            
+        }
+        //Xóa khỏi giỏ hàng
+        function removeElement(id) {
+            const removeNode = $('#row-' + id);
+            removeNode.remove();
+            cardItem = cardItem.filter((item, index) => {
+                return item.id != id;
+            })
+            var item = JSON.stringify(cardItem);
+            if (typeof (Storage) !== "undefined") {
+                localStorage.setItem('card', item);
+                $('#card_quatity').innerHTML = cardItem.length;
+            }
+            $('#tong_tien').innerHTML = getTongTien();
+        }
+
+        const oderUrl = 'https://5fc51af836bc7900163446a0.mockapi.io/oder';
+        $('#oder_form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const oderObj = {};
+            oderObj.hoTen = $('input[name=fullname]').value;
+            oderObj.address = $('input[name=address]').value;
+            oderObj.phone_number = $('input[name=phone_number]').value;
+            oderObj.payMethod = $('input[name=pay_method]').value;
+            oderObj.item = cardItem;
+            oderObj.tongTien = getTongTien();
+            console.log(oderObj);
+            axios.post(oderUrl,oderObj)
+                .then(function (response) {
+                    console.log(response.data);
+                    Swal.fire({
+            title: 'Đặt hàng thành công!',
+            width: 600,
+            padding: '3em',
+            background: '#fff url(https://stockdep.net/files/images/20911603.jpg)',
+            backdrop: `
+                rgba(0,0,123,0.4)
+                url(https://i.gifer.com/origin/fd/fdf70f5f4989f9c08f033da50c38170e_w200.gif)
+                left top
+                no-repeat
+            `
+            })
+                })
+
+            $('#thong_bao').innerHTML = "Đặt hàng thành công!";
+
+        });
+    </script>
+</body>
+
+</html>

@@ -19,7 +19,8 @@
             <div class="container">
                 <nav class="navbar navbar-expand-lg navbar-light">
                     <a class="navbar-brand" href="index.html">
-                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png" alt="" width="50">
+                        <img src="https://thuatnguyencorp.com/uploads/product/thiet-ke-logo-online-ton-tea-cake.png"
+                            alt="" width="50">
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse"
                         data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -95,14 +96,19 @@
     <!--End category-->
     <section>
         <div class="container">
+            <div class="my-6">
+                <label for="cate" class="font-bold">Chọn danh mục</label>
+                <select name="cate_id" id="select_cate" onchange="selectCate()" class="form-select">
+                </select>
+            </div>
             <h2 class="text-center my-4">SẢN PHẨM</h2>
             <div id="product" class="row">
-                
+
             </div>
         </div>
     </section>
 
-    <footer class="footer h-48 bg-blue-700"> 
+    <footer class="footer h-48 bg-blue-700">
         <p class="text-center text-white">Footer here</p>
     </footer>
     <!--End products-->
@@ -121,32 +127,54 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script>
         const $ = document.querySelector.bind(document);
+        const urlCate = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
+        var urlProduct ='https://5fc51af836bc7900163446a0.mockapi.io/category/1/products';
 
-        const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
+        //Đổ dữ liệu vào selectbox
+        axios.get(urlCate)
+            .then((res) => {
+                const data = res.data;
+                const results = data.map((item) => {
+                    return `
+                            <option value="${item.id}">${item.name}</option>
+                        `
+                }).join("");
+                $('#select_cate').innerHTML = results;
+            });
 
+        //Lấy sản phẩm
+        function getProducts() {
+            axios.get(urlProduct)
+                .then((response) => {
 
-            axios.get(urlProducts)
-            .then( (response) =>{
-                if (response.status === 200) {
-                    var data = response.data;
-                    const results = data.map((item) => {
-                        return `
+                        var data = response.data;
+                        console.log(data);
+                        var results = data.map((item) => {
+                            return `
                         <div class="col-sm-3 text-center">
                             <div class="card m-1">
                                 <img src="${item.image}" class="card-img-top" alt="...">
                                  <div class="card-body">
                                 <h5 class="card-title">${item.name}</h5>
                                 <h5 class="card-title">${item.price} $</h5>
-                                <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                <a href="product-detail.html?cate_id=${item.cate_id}&id=${item.id}" class="btn btn-primary">Chi tiết</a>
                                 </div>
                             </div>
                             
                         </div>
                         `
-                    }).join("");
-                    $('#product').innerHTML = results;
-                }
-            });
+                        }).join("");
+                        $('#product').innerHTML = results;
+                });
+        }
+        getProducts();
+
+        //Set sự kiện onchange
+        function selectCate(){
+            var id = $('#select_cate').value;
+            urlProduct=`${urlCate}/${id}/products`;
+            getProducts();
+        }
     </script>
 </body>
 

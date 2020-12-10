@@ -100,8 +100,7 @@
             </div>
             <div class="col-lg-9">
                 <h2 class="text-center my-4" id="cate_name"></h2>
-                <button class="btn btn-primary">Xắp xếp theo tên</button>
-                <button class="btn btn-success">Xắp xếp theo giá</button>
+
                 <div class="row" id="product"></div>
             </div>
         </div>
@@ -136,11 +135,10 @@
     <script>
         const $ = document.querySelector.bind(document);
 
-        const urlProducts = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
         const urlCategory = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
         //Lấy tham số trên đường dẫn
         const urlParams = new URL(document.URL);
-        var id = urlParams.searchParams.get('id');
+        var cate_id = urlParams.searchParams.get('cate_id');
 
         axios.get(urlCategory)
             .then((response) => {
@@ -148,7 +146,7 @@
                     var data = response.data;
                     const results = data.map((item) => {
                         return `
-                        <li class="list-group-item"><a href="category-detail.html?id=${item.id}">${item.name}</a></li>
+                        <li class="list-group-item"><a href="category-detail.html?cate_id=${item.id}">${item.name}</a></li>
                         `
                     }).join("");
                     $('#category').innerHTML = results;
@@ -156,29 +154,24 @@
             });
 
         function getCateInfor() {
-            console.log(id);
+            console.log(cate_id);
             // 2. gửi request lên mock api để lấy thông tin về
-            const getCateInforUrl = `${urlCategory}/${id}`;
+            const getCateInforUrl = `${urlCategory}/${cate_id}`;
 
             axios.get(getCateInforUrl)
                 .then(response => {
                     cateInfo = response.data;
-                    console.log(cateInfo);
                     $('#cate_name').innerHTML = cateInfo.name;
                 })
         }
         getCateInfor();
 
-        var product_cate = [];
+        const urlProducts = `${urlCategory}/${cate_id}/products`; 
         axios.get(urlProducts)
             .then(response => {
                 const products = response.data;
-                products.forEach(item => {
-                    if (item.cate_id === id) {
-                        product_cate.push(item);
-                    }
-                });
-                const result = product_cate.map((item) => {
+
+                const result = products.map((item) => {
                     return `
                                 <div class="col-sm-4 text-center">
                                     <div class="card m-1">
@@ -186,7 +179,7 @@
                                         <div class="card-body">
                                         <h5 class="card-title">${item.name}</h5>
                                         <h5 class="card-title">${item.price} $</h5>
-                                        <a href="product-detail.html?id=${item.id}" class="btn btn-primary">Chi tiết</a>
+                                        <a href="product-detail.html?cate_id=${item.cate_id}&id=${item.id}" class="btn btn-primary">Chi tiết</a>
                                         </div>
                                     </div>
                                 </div>

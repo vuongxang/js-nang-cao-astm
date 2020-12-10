@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-sm-3 col-lg-2 sidebar shadow-lg p-3 mb-5 bg-light rounded">
                 <div class="sidebar-brand-box border-bottom pb-4">
-                    <a class="sidebar-brand" href="#"><span class="text-danger">Xshop</span>Admin</a>
+                    <a class="sidebar-brand" href="../frontend/index.html"><span class="text-danger">Xshop</span>site</a>
                 </div>
                 <nav class="sidebar-menu">
                     <ul class="nav flex-column">
@@ -193,8 +193,6 @@
     <!-- <script src="js/script.js"></script> -->
     <script>
         //add new product
-        const url = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
-
         const $ = document.querySelector.bind(document);
         const urlCate = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
         //Lấy danh sách category
@@ -228,8 +226,8 @@
                 desc: desc
             }
             console.log(objNew);
-
-            axios.post(url, objNew)
+            const urlProduct = `${urlCate}/${cate_id}/products`;
+            axios.post(urlProduct, objNew)
                 .then(function (response) {
                         window.location = "index.html";
                 });

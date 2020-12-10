@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-3 col-lg-2 sidebar shadow-lg p-3 mb-5 bg-light rounded" id="siderbar">
                 <div class="sidebar-brand-box border-bottom pb-4">
-                    <a class="sidebar-brand" href="#"><span class="text-danger">Xshop</span>Admin</a>
+                    <a class="sidebar-brand" href="../frontend/index.html"><span class="text-danger">Xshop</span>site</a>
                 </div>
                 <nav class="sidebar-menu">
                     <ul class="nav flex-column">
@@ -152,8 +152,14 @@
                 <div id="detailPost">
                     <div class="container">
                         <h2 class="text-2xl font-bold my-10 text-center">Quản lý sản phẩm</h2>
+                        <div>
+                            <label for="cate" class="font-bold">Chọn danh mục</label>
+                            <select name="cate_id" id="cate" onchange="selectCate()" class="form-select">
+                            </select>
+                        </div>
+                        <!--Select category-->
                         <table id="list-product" class="table table-striped">
-                            <thead>
+                            <thead class="thead-dark">
                                 <th>id</th>
                                 <th>name</th>
                                 <th>danh mục</th>
@@ -177,13 +183,23 @@
     <!-- <script src="js/script.js"></script> -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.12.0/dist/sweetalert2.all.min.js"></script>
     <script>
-        const url = 'https://5fc51af836bc7900163446a0.mockapi.io/products';
         const urlCate = 'https://5fc51af836bc7900163446a0.mockapi.io/category';
-
+        var urlProduct ='https://5fc51af836bc7900163446a0.mockapi.io/category/1/products';
         const $ = document.querySelector.bind(document);
-
-        //Show products
-        axios.get(url)
+        //Get cate
+        axios.get(urlCate)
+            .then((res)=>{
+                const data = res.data;
+                const results = data.map((item) => {
+                        return `
+                            <option value="${item.id}">${item.name}</option>
+                        `
+                    }).join("");
+                    $('#cate').innerHTML = results;
+            });
+        //Lấy danh sách products
+            function getProducts(){
+            axios.get(urlProduct)
             .then(function (response) {
 
                 if (response.status === 200) {
@@ -199,8 +215,8 @@
                             <td>${item.sale_price}</td>    
                             <td>${item.desc}</td>    
                             <td>
-                                <a class="btn btn-primary" href="edit-product.html?id=${item.id}">Edit</a>
-                                <a class="btn btn-danger" onclick="removeElement(${item.id})">remove</a>
+                                <a class="fa fa-edit text-primary" href="edit-product.html?id=${item.id}&cate_id=${item.cate_id}"></a>
+                                <a class="fa fa-trash-alt text-danger" onclick="removeElement(${item.id})"></a>
                             </td>
                         </tr>
                         `
@@ -208,6 +224,15 @@
                     $('#list-product>tbody').innerHTML = results;
                 }
             });
+        }
+        getProducts();
+        function selectCate(){
+            var id = $('#cate').value;
+            urlProduct=`${urlCate}/${id}/products`;
+            console.log(urlProduct);
+            getProducts();
+        }
+        
 
         //remove product
         function removeElement(id) {
@@ -223,7 +248,7 @@
                 if (result.isConfirmed) {
 
                     //Gửi request lên sever
-                    const removeUrl = `${url}/${id}`;
+                    const removeUrl = `${urlProduct}/${id}`;
                     axios.delete(removeUrl)
                         .then((response) => {
                             if (response.status == 200) {
@@ -232,7 +257,7 @@
                             }
                         });
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Xóa thành công',
                         showConfirmButton: false,
